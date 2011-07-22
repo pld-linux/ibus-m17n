@@ -5,7 +5,7 @@
 Summary:	The M17N engine for IBus platform
 Name:		ibus-m17n
 Version:	1.3.2
-Release:	0.1
+Release:	0.2
 License:	GPL v2+
 Group:		Libraries
 URL:		http://code.google.com/p/ibus/
@@ -61,7 +61,7 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %doc AUTHORS README
+%attr(755,root,root) %{_libexecdir}/ibus-engine-m17n
+%attr(755,root,root) %{_libexecdir}/ibus-setup-m17n
 %{_datadir}/ibus-m17n
-%{_libexecdir}/ibus-engine-m17n
-%{_libexecdir}/ibus-setup-m17n
 %{_datadir}/ibus/component/*
