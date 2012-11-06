@@ -6,7 +6,7 @@ Summary:	The M17N engine for IBus platform
 Summary(pl.UTF-8):	Silnik M17N dla platformy IBus
 Name:		ibus-m17n
 Version:	1.3.4
-Release:	1
+Release:	2
 License:	GPL v2+
 Group:		Libraries
 #Source0Download: http://code.google.com/p/ibus/downloads/list
