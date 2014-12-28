@@ -18,7 +18,7 @@ Patch2:		%{name}-xx-icon-symbol.patch
 URL:		http://code.google.com/p/ibus/
 BuildRequires:	autoconf
 BuildRequires:	automake >= 1:1.10
-BuildRequires:	gettext-devel >= 0.16.1
+BuildRequires:	gettext-tools >= 0.16.1
 BuildRequires:	gnome-common
 BuildRequires:	libtool
 BuildRequires:	m17n-lib-devel
