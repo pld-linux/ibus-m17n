@@ -9,13 +9,13 @@ Version:	1.3.4
 Release:	2
 License:	GPL v2+
 Group:		Libraries
-#Source0Download: http://code.google.com/p/ibus/downloads/list
+#Source0Download: https://github.com/ibus/ibus-m17n/releases
 Source0:	http://ibus.googlecode.com/files/%{name}-%{version}.tar.gz
 # Source0-md5:	6f644b73c5943e3c7fb2e02b9e259804
 Patch0:		%{name}-iok.patch
 Patch1:		%{name}-xkb-options.patch
 Patch2:		%{name}-xx-icon-symbol.patch
-URL:		http://code.google.com/p/ibus/
+URL:		https://github.com/ibus/ibus-m17n
 BuildRequires:	autoconf
 BuildRequires:	automake >= 1:1.10
 BuildRequires:	gettext-tools >= 0.16.1
