@@ -1,366 +1,79 @@
-Patch to set certain XKB options when an m17n IME is set.
-Index: ibus-m17n-1.3.2/configure.ac
+Index: ibus-m17n-1.3.4/src/default.xml
 ===================================================================
---- ibus-m17n-1.3.2.orig/configure.ac
-+++ ibus-m17n-1.3.2/configure.ac
-@@ -106,6 +106,14 @@ AC_CHECK_FUNCS([ibus_engine_get_surround
- CFLAGS="$save_CFLAGS"
- LIBS="$save_LIBS"
- 
-+# check libxklavier
-+have_libxklavier=no
-+PKG_CHECK_MODULES([LIBXKLAVIER], [libxklavier gdk-3.0 x11],
-+  have_libxklavier=yes)
-+if test x$have_libxklavier != xno; then
-+  AC_DEFINE([HAVE_LIBXKLAVIER], [1], [Define if libxklavier is found])
-+fi
-+
- # define GETTEXT_* variables
- GETTEXT_PACKAGE=ibus-m17n
- AC_SUBST(GETTEXT_PACKAGE)
---- ibus-m17n-1.3.4/src/Makefile.am.orig	2012-09-16 08:11:40.210367056 +0200
-+++ ibus-m17n-1.3.4/src/Makefile.am	2012-09-16 08:18:31.153691826 +0200
-@@ -65,10 +65,15 @@
- 	engine.c \
- 	engine.h \
- 	$(NULL)
-+ibus_engine_m17n_CFLAGS = \
-+	@LIBXKLAVIER_CFLAGS@ \
-+	$(AM_CFLAGS) \
-+	$(NULL)
- ibus_engine_m17n_LDADD = \
- 	libm17ncommon.la \
- 	@IBUS_LIBS@ \
- 	@M17N_LIBS@ \
-+	@LIBXKLAVIER_LIBS@ \
- 	$(NULL)
- 
- if HAVE_GTK
---- ibus-m17n-1.3.4/src/default.xml.in.in.orig	2012-09-16 08:11:40.210367056 +0200
-+++ ibus-m17n-1.3.4/src/default.xml.in.in	2012-09-16 08:25:48.153682716 +0200
-@@ -73,6 +73,7 @@
- 	<engine>
- 		<name>m17n:si:*</name>
- 		<rank>1</rank>
-+		<xkb-options>lv3:ralt_switch</xkb-options>
+--- ibus-m17n-1.3.4.orig/src/default.xml
++++ ibus-m17n-1.3.4/src/default.xml
+@@ -184,6 +184,15 @@
+ 		<name>m17n:si:samanala</name>
+ 		<rank>0</rank>
  	</engine>
++	<!-- Some Indic engines expect AltGr is automatically mapped -->
++	<engine>
++		<name>m17n:*:inscript*</name>
++		<layout>default[lv3:ralt_switch]</layout>
++	</engine>
++	<engine>
++		<name>m17n:si:*</name>
++		<layout>default[lv3:ralt_switch]</layout>
++	</engine>
+ 	<!-- Some CJK engines use preedit. -->
  	<engine>
- 		<name>m17n:ta:*</name>
-@@ -89,16 +90,19 @@
- 		<rank>2</rank>
- 	</engine>
- 	<engine>
--		<name>m17n:bn:inscript</name>
-+		<name>m17n:bn:inscript*</name>
- 		<rank>2</rank>
-+		<xkb-options>lv3:ralt_switch</xkb-options>
- 	</engine>
- 	<engine>
--		<name>m17n:gu:inscript</name>
-+		<name>m17n:gu:inscript*</name>
- 		<rank>2</rank>
-+		<xkb-options>lv3:ralt_switch</xkb-options>
- 	</engine>
- 	<engine>
--		<name>m17n:hi:inscript</name>
-+		<name>m17n:hi:inscript*</name>
- 		<rank>2</rank>
-+		<xkb-options>lv3:ralt_switch</xkb-options>
- 	</engine>
- 	<engine>
- 		<name>m17n:kn:kgp</name>
-@@ -109,48 +113,56 @@
- 		<rank>2</rank>
- 	</engine>
- 	<engine>
--		<name>m17n:mai:inscript</name>
-+		<name>m17n:mai:inscript*</name>
- 		<rank>2</rank>
-+		<xkb-options>lv3:ralt_switch</xkb-options>
- 	</engine>
- 	<engine>
--		<name>m17n:ml:inscript</name>
-+		<name>m17n:ml:inscript*</name>
- 		<rank>2</rank>
-+		<xkb-options>lv3:ralt_switch</xkb-options>
- 	</engine>
- 	<engine>
--		<name>m17n:mr:inscript</name>
-+		<name>m17n:mr:inscript*</name>
- 		<rank>2</rank>
-+		<xkb-options>lv3:ralt_switch</xkb-options>
- 	</engine>
- 	<engine>
- 		<name>m17n:ne:rom</name>
- 		<rank>2</rank>
- 	</engine>
- 	<engine>
--		<name>m17n:or:inscript</name>
-+		<name>m17n:or:inscript*</name>
- 		<rank>2</rank>
-+		<xkb-options>lv3:ralt_switch</xkb-options>
- 	</engine>
- 	<engine>
--		<name>m17n:pa:inscript</name>
-+		<name>m17n:pa:inscript*</name>
- 		<rank>2</rank>
-+		<xkb-options>lv3:ralt_switch</xkb-options>
- 	</engine>
- 	<engine>
- 		<name>m17n:sa:harvard-kyoto</name>
- 		<rank>2</rank>
- 	</engine>
- 	<engine>
--		<name>m17n:sd:inscript</name>
-+		<name>m17n:sd:inscript*</name>
- 		<rank>2</rank>
-+		<xkb-options>lv3:ralt_switch</xkb-options>
- 	</engine>
- 	<engine>
- 		<name>m17n:si:wijesekera</name>
- 		<rank>2</rank>
-+		<xkb-options>lv3:ralt_switch</xkb-options>
- 	</engine>
- 	<engine>
- 		<name>m17n:ta:tamil99</name>
- 		<rank>2</rank>
- 	</engine>
- 	<engine>
--		<name>m17n:te:inscript</name>
-+		<name>m17n:te:inscript*</name>
- 		<rank>2</rank>
-+		<xkb-options>lv3:ralt_switch</xkb-options>
- 	</engine>
- 	<!-- Assign lower rank to Sinhala Samanala since it is a
- 	     non-keyboard input method in Sinhala. -->
---- ibus-m17n-1.3.4/src/engine.c.orig	2012-09-16 08:11:40.203700392 +0200
-+++ ibus-m17n-1.3.4/src/engine.c	2012-09-16 08:42:36.946995034 +0200
-@@ -6,6 +6,10 @@
- #include <ibus.h>
- #include <m17n.h>
- #include <string.h>
-+#ifdef HAVE_LIBXKLAVIER
-+#include <gdk/gdkx.h>
-+#include <libxklavier/xklavier.h>
-+#endif  /* HAVE_LIBXKLAVIER */
- #include "m17nutil.h"
- #include "engine.h"
- 
-@@ -39,6 +43,10 @@ struct _IBusM17NEngineClass {
-     gboolean use_iok;
- 
-     MInputMethod *im;
-+
-+#if HAVE_LIBXKLAVIER
-+    XklConfigRec *xkl_config_rec;
-+#endif  /* HAVE_LIBXKLAVIER */
- };
- 
- /* functions prototype */
-@@ -102,12 +110,90 @@ static IBusEngineClass *parent_class = N
- 
- static IBusConfig      *config = NULL;
- 
-+#if HAVE_LIBXKLAVIER
-+static XklEngine       *xkl_engine = NULL;
-+static XklConfigRec    *xkl_system_config_rec = NULL;
-+
-+static gboolean
-+parse_xkb_options (XklConfigRec *config_rec, const gchar *xkb_options)
-+{
-+    gchar **strv;
-+
-+    strv = g_strsplit (xkb_options, ",", -1);
-+    if (g_strv_length (strv) < 1) {
-+        g_strfreev (strv);
-+        return FALSE;
-+    }
-+
-+    g_strfreev (config_rec->options);
-+    config_rec->options = strv;
-+
-+    return TRUE;
-+}
-+
-+static GdkFilterReturn
-+filter_xkl_event (GdkXEvent *xev,
-+                  GdkEvent  *event,
-+                  gpointer   user_data)
-+{
-+    XEvent *xevent = (XEvent *)xev;
-+
-+    xkl_engine_filter_events (xkl_engine, xevent);
-+    return GDK_FILTER_CONTINUE;
-+}
-+
-+static void
-+on_xkl_config_changed (XklEngine *xklengine,
-+                       gpointer   user_data)
-+{
-+    IBusM17NEngineClass *klass = user_data;
-+    XklConfigRec *config_rec;
-+
-+    config_rec = xkl_config_rec_new ();
-+    if (!xkl_config_rec_get_from_server (config_rec, xkl_engine)) {
-+        g_object_unref (config_rec);
-+        g_warning ("Can't get default keyboard config from the server");
-+    } else if (klass->xkl_config_rec &&
-+               !xkl_config_rec_equals (config_rec, klass->xkl_config_rec)) {
-+        if (xkl_system_config_rec)
-+            g_object_unref (xkl_system_config_rec);
-+        xkl_system_config_rec = config_rec;
-+    }
-+}
-+#endif  /* HAVE_LIBXKLAVIER */
-+
- void
- ibus_m17n_init (IBusBus *bus)
- {
-+#if HAVE_LIBXKLAVIER
-+    if (gdk_init_check (NULL, NULL)) {
-+        GdkDisplay *display = gdk_display_get_default ();
-+        g_assert (display);
-+
-+        xkl_engine = xkl_engine_get_instance (GDK_DISPLAY_XDISPLAY (display));
-+        xkl_system_config_rec = xkl_config_rec_new ();
-+        if (!xkl_config_rec_get_from_server (xkl_system_config_rec,
-+                                             xkl_engine)) {
-+            g_object_unref (xkl_system_config_rec);
-+            xkl_system_config_rec = NULL;
-+
-+            g_warning ("Can't get default keyboard config from the server");
-+        } else {
-+            gdk_window_add_filter (NULL,
-+                                   (GdkFilterFunc) filter_xkl_event,
-+                                   NULL);
-+            gdk_window_add_filter (gdk_get_default_root_window (),
-+                                   (GdkFilterFunc) filter_xkl_event,
-+                                   NULL);
-+            xkl_engine_start_listen (xkl_engine, XKLL_TRACK_KEYBOARD_STATE);
-+        }
-+    }
-+#endif  /* HAVE_LIBXKLAVIER */
-+
-     config = ibus_bus_get_config (bus);
-     if (config)
-         g_object_ref_sink (config);
-+
-     ibus_m17n_init_common ();
- }
- 
-@@ -316,6 +402,25 @@ ibus_m17n_engine_class_init (IBusM17NEng
-                       G_CALLBACK(ibus_m17n_config_value_changed),
-                       klass);
- 
-+#if HAVE_LIBXKLAVIER
-+    if (engine_config->xkb_options) {
-+        klass->xkl_config_rec = xkl_config_rec_new ();
-+        if (!xkl_config_rec_get_from_server (klass->xkl_config_rec,
-+                                             xkl_engine)) {
-+            g_object_unref (klass->xkl_config_rec);
-+            g_warning ("Can't get default keyboard config from the server");
-+        } else if (!parse_xkb_options (klass->xkl_config_rec,
-+                                       engine_config->xkb_options)) {
-+            g_object_unref (klass->xkl_config_rec);
-+            g_warning ("Can't parse xkb options %s",
-+                       engine_config->xkb_options);
-+        }
-+    }
-+
-+    g_signal_connect (xkl_engine, "X-config-changed",
-+                      G_CALLBACK(on_xkl_config_changed), klass);
-+#endif  /* HAVE_LIBXKLAVIER */
-+
-     klass->im = NULL;
- }
- 
-@@ -417,6 +522,9 @@ ibus_m17n_engine_constructor (GType
-     IBusM17NEngine *m17n;
-     GObjectClass *object_class;
-     IBusM17NEngineClass *klass;
-+#if HAVE_LIBXKLAVIER
-+    GdkDisplay *display;
-+#endif  /* HAVE_LIBXKLAVIER */
- 
-     m17n = (IBusM17NEngine *) G_OBJECT_CLASS (parent_class)->constructor (type,
-                                                        n_construct_params,
-@@ -504,6 +612,11 @@ ibus_m17n_engine_destroy (IBusM17NEngine
-         m17n->context = NULL;
-     }
- 
-+#if HAVE_LIBXKLAVIER
-+    if (xkl_system_config_rec)
-+        xkl_config_rec_activate (xkl_system_config_rec, xkl_engine);
-+#endif  /* HAVE_LIBXKLAVIER */
-+
-     IBUS_OBJECT_CLASS (parent_class)->destroy ((IBusObject *)m17n);
- }
- 
-@@ -739,6 +852,19 @@ ibus_m17n_engine_enable (IBusEngine *eng
-     /* Issue a dummy ibus_engine_get_surrounding_text() call to tell
-        input context that we will use surrounding-text. */
-     ibus_engine_get_surrounding_text (engine, NULL, NULL, NULL);
-+
-+#if HAVE_LIBXKLAVIER
-+    GObjectClass *object_class;
-+    IBusM17NEngineClass *klass;
-+
-+    object_class = G_OBJECT_GET_CLASS (m17n);
-+    klass = (IBusM17NEngineClass *) object_class;
-+
-+    if (klass->xkl_config_rec) {
-+        if (!xkl_config_rec_activate (klass->xkl_config_rec, xkl_engine))
-+            g_warning ("Can't set the XKB layout");
-+    }
-+#endif  /* HAVE_LIBXKLAVIER */
- }
- 
- static void
-@@ -748,6 +874,17 @@ ibus_m17n_engine_disable (IBusEngine *en
- 
-     ibus_m17n_engine_focus_out (engine);
-     parent_class->disable (engine);
-+
-+#if HAVE_LIBXKLAVIER
-+    GObjectClass *object_class;
-+    IBusM17NEngineClass *klass;
-+
-+    object_class = G_OBJECT_GET_CLASS (m17n);
-+    klass = (IBusM17NEngineClass *) object_class;
-+
-+    if (xkl_system_config_rec)
-+        xkl_config_rec_activate (xkl_system_config_rec, xkl_engine);
-+#endif  /* HAVE_LIBXKLAVIER */
- }
- 
- static void
-Index: ibus-m17n-1.3.2/src/m17nutil.c
+ 		<name>m17n:zh:cangjie</name>
+Index: ibus-m17n-1.3.4/src/m17nutil.c
 ===================================================================
---- ibus-m17n-1.3.2.orig/src/m17nutil.c
-+++ ibus-m17n-1.3.2/src/m17nutil.c
-@@ -290,6 +290,11 @@ ibus_m17n_engine_config_parse_xml_node (
-                            sub_node->name, sub_node->text);
+--- ibus-m17n-1.3.4.orig/src/m17nutil.c
++++ ibus-m17n-1.3.4/src/m17nutil.c
+@@ -17,7 +17,8 @@ typedef enum {
+     ENGINE_CONFIG_RANK_MASK = 1 << 0,
+     ENGINE_CONFIG_SYMBOL_MASK = 1 << 1,
+     ENGINE_CONFIG_LONGNAME_MASK = 1 << 2,
+-    ENGINE_CONFIG_PREEDIT_HIGHLIGHT_MASK = 1 << 3
++    ENGINE_CONFIG_LAYOUT_MASK = 1 << 3,
++    ENGINE_CONFIG_PREEDIT_HIGHLIGHT_MASK = 1 << 4
+ } EngineConfigMask;
+ 
+ struct _EngineConfigNode {
+@@ -137,7 +138,7 @@ ibus_m17n_engine_new (MSymbol  lang,
+                                            "language",    msymbol_name (lang),
+                                            "license",     "GPL",
+                                            "icon",        engine_icon ? engine_icon : "",
+-                                           "layout",      "default",
++                                           "layout",      config->layout ? config->layout : "default",
+                                            "rank",        config->rank,
+                                            "symbol",      config->symbol ? config->symbol : "",
+                                            "setup",       engine_setup,
+@@ -272,6 +273,8 @@ ibus_m17n_get_engine_config (const gchar
+                 config->symbol = cnode->config.symbol;
+             if (cnode->mask & ENGINE_CONFIG_LONGNAME_MASK)
+                 config->longname = cnode->config.longname;
++            if (cnode->mask & ENGINE_CONFIG_LAYOUT_MASK)
++                config->layout = cnode->config.layout;
+             if (cnode->mask & ENGINE_CONFIG_PREEDIT_HIGHLIGHT_MASK)
+                 config->preedit_highlight = cnode->config.preedit_highlight;
+         }
+@@ -314,6 +317,12 @@ ibus_m17n_engine_config_parse_xml_node (
+             cnode->mask |= ENGINE_CONFIG_LONGNAME_MASK;
              continue;
          }
-+        if (g_strcmp0 (sub_node->name, "xkb-options") == 0) {
-+            g_free (cnode->config.xkb_options);
-+            cnode->config.xkb_options = g_strdup (sub_node->text);
++        if (g_strcmp0 (sub_node->name , "layout") == 0) {
++            g_free (cnode->config.layout);
++            cnode->config.layout = g_strdup (sub_node->text);
++            cnode->mask |= ENGINE_CONFIG_LAYOUT_MASK;
 +            continue;
 +        }
-         g_warning ("<engine> element contains invalid element <%s>",
-                    sub_node->name);
-     }
-Index: ibus-m17n-1.3.2/src/m17nutil.h
+         if (g_strcmp0 (sub_node->name , "preedit-highlight") == 0) {
+             if (g_ascii_strcasecmp ("TRUE", sub_node->text) == 0)
+                 cnode->config.preedit_highlight = TRUE;
+Index: ibus-m17n-1.3.4/src/m17nutil.h
 ===================================================================
---- ibus-m17n-1.3.2.orig/src/m17nutil.h
-+++ ibus-m17n-1.3.2/src/m17nutil.h
-@@ -16,6 +16,9 @@ struct _IBusM17NEngineConfig {
+--- ibus-m17n-1.3.4.orig/src/m17nutil.h
++++ ibus-m17n-1.3.4/src/m17nutil.h
+@@ -20,6 +20,9 @@ struct _IBusM17NEngineConfig {
+     /* overridding longname shown on panel */
+     gchar *longname;
  
++    /* keyboard layout */
++    gchar *layout;
++
      /* whether to highlight preedit */
      gboolean preedit_highlight;
-+
-+    /* keyboard options to which the engine switches when enabled */
-+    char *xkb_options;
  };
- 
- typedef struct _IBusM17NEngineConfig IBusM17NEngineConfig;

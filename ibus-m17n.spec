@@ -1,34 +1,28 @@
-#
-# Conditional build:
-%bcond_with	bridge_hotkey		# enable the engine hotkeys
-#
 Summary:	The M17N engine for IBus platform
 Summary(pl.UTF-8):	Silnik M17N dla platformy IBus
 Name:		ibus-m17n
-Version:	1.3.4
-Release:	2
+Version:	1.4.2
+Release:	1
 License:	GPL v2+
 Group:		Libraries
 #Source0Download: https://github.com/ibus/ibus-m17n/releases
-Source0:	http://ibus.googlecode.com/files/%{name}-%{version}.tar.gz
-# Source0-md5:	6f644b73c5943e3c7fb2e02b9e259804
-Patch0:		%{name}-iok.patch
-Patch1:		%{name}-xkb-options.patch
-Patch2:		%{name}-xx-icon-symbol.patch
+Source0:	https://github.com/ibus/ibus-m17n/releases/download/%{version}/%{name}-%{version}.tar.gz
+# Source0-md5:	2042a1da9675041a853d6eba7517b212
+Patch0:		%{name}-xkb-options.patch
 URL:		https://github.com/ibus/ibus-m17n
-BuildRequires:	autoconf
+BuildRequires:	autoconf >= 2.50
 BuildRequires:	automake >= 1:1.10
-BuildRequires:	gettext-tools >= 0.16.1
-BuildRequires:	gnome-common
+BuildRequires:	gettext-tools >= 0.19
 BuildRequires:	libtool
 BuildRequires:	m17n-lib-devel
-BuildRequires:	pkgconfig
 BuildRequires:	gtk+3-devel >= 3.0
 BuildRequires:	ibus-devel >= 1.4.0
-BuildRequires:	libxklavier-devel
+BuildRequires:	pkgconfig
+BuildRequires:	rpmbuild(macros) >= 1.596
+BuildRequires:	sed >= 4.0
 BuildRequires:	xorg-lib-libX11-devel
+Requires(post,postun):	glib2 >= 1:2.26.0
 Requires:	ibus >= 1.4.0
-Requires:	iok > 1.3.1
 Requires:	m17n-lib
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -46,8 +40,6 @@ z m17n-db.
 %prep
 %setup -q
 %patch0 -p1
-%patch1 -p1
-%patch2 -p1
 
 %build
 %{__libtoolize}
@@ -57,26 +49,34 @@ z m17n-db.
 %{__automake}
 %configure \
 	--disable-silent-rules \
-	%{?with_bridge_hotkey:--with-hotkeys} \
 	--with-gtk=3.0
 
 %{__make}
 
 %install
 rm -rf $RPM_BUILD_ROOT
+
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
 
-# not yet - only single, empty file exists
-#find_lang %{name}
+%find_lang %{name}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%files
+%post
+%glib_compile_schemas
+
+%postun
+%glib_compile_schemas
+
+%files -f %{name}.lang
 %defattr(644,root,root,755)
 %doc AUTHORS README
 %attr(755,root,root) %{_libexecdir}/ibus-engine-m17n
 %attr(755,root,root) %{_libexecdir}/ibus-setup-m17n
+%{_datadir}/glib-2.0/schemas/org.freedesktop.ibus.engine.m17n.gschema.xml
 %{_datadir}/ibus-m17n
 %{_datadir}/ibus/component/m17n.xml
+%{_datadir}/metainfo/m17n.appdata.xml
+%{_desktopdir}/ibus-setup-m17n.desktop
