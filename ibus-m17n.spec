@@ -1,14 +1,13 @@
 Summary:	The M17N engine for IBus platform
 Summary(pl.UTF-8):	Silnik M17N dla platformy IBus
 Name:		ibus-m17n
-Version:	1.4.2
+Version:	1.4.34
 Release:	1
 License:	GPL v2+
 Group:		Libraries
 #Source0Download: https://github.com/ibus/ibus-m17n/releases
 Source0:	https://github.com/ibus/ibus-m17n/releases/download/%{version}/%{name}-%{version}.tar.gz
-# Source0-md5:	2042a1da9675041a853d6eba7517b212
-Patch0:		%{name}-xkb-options.patch
+# Source0-md5:	0f1c453ce850049261292f0837b20f8f
 URL:		https://github.com/ibus/ibus-m17n
 BuildRequires:	autoconf >= 2.50
 BuildRequires:	automake >= 1:1.10
@@ -39,7 +38,6 @@ z m17n-db.
 
 %prep
 %setup -q
-%patch0 -p1
 
 %build
 %{__libtoolize}
@@ -80,3 +78,5 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/ibus/component/m17n.xml
 %{_datadir}/metainfo/m17n.appdata.xml
 %{_desktopdir}/ibus-setup-m17n.desktop
+%{_iconsdir}/hicolor/*x*/apps/ibus-m17n.png
+%{_iconsdir}/hicolor/scalable/apps/ibus-m17n.svg
